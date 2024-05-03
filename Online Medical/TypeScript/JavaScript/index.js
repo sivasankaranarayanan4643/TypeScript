@@ -4,12 +4,14 @@ let correctEmail = false;
 let correctPhone = false;
 let correctConfirmPassword = false;
 let correctAmount = false;
+let correctuserName = false;
 let MedicineIdAutoIncrement = 10;
 let OrderIdAutoIncrement = 100;
 let currentUser;
 class UserDetails {
-    constructor(email, password, phone) {
+    constructor(userName, email, password, phone) {
         this.balance = 0;
+        this.UserName = userName;
         this.email = email;
         this.password = password;
         this.phone = phone;
@@ -32,7 +34,7 @@ var OrderStatus;
 })(OrderStatus || (OrderStatus = {}));
 ;
 class Order {
-    constructor(paramMedicineId, email, paramMedicineName, paramMedicineCount, price, orderStatus) {
+    constructor(paramMedicineId, email, paramMedicineName, paramMedicineCount, price, orderStatus, expiryDate) {
         OrderIdAutoIncrement++;
         this.Price = price;
         this.OrderId = "OI" + OrderIdAutoIncrement.toString();
@@ -41,20 +43,21 @@ class Order {
         this.MedicineName = paramMedicineName;
         this.MedicineCount = paramMedicineCount;
         this.OrderStatus = orderStatus;
+        this.ExpiryDate = expiryDate;
     }
 }
 let userList = new Array();
-userList.push(new UserDetails("sasi@gmail.com", "Sasi@123", "6369765310"));
+userList.push(new UserDetails("Sasi", "sasi@gmail.com", "Sasi@123", "6369765310"));
 let MedicineList = new Array();
-MedicineList.push(new MedicineInfo("Paracetomol", 5, 50, new Date(2024, 12, 2)));
-MedicineList.push(new MedicineInfo("Colpal", 5, 60, new Date(2024, 12, 2)));
-MedicineList.push(new MedicineInfo("Stepsil", 5, 70, new Date(2024, 12, 2)));
-MedicineList.push(new MedicineInfo("Iodex", 5, 80, new Date(2024, 12, 2)));
-MedicineList.push(new MedicineInfo("Acetherol", 5, 100, new Date(2024, 12, 2)));
+MedicineList.push(new MedicineInfo("Paracetomol", 5, 50, new Date(2024, 11, 2)));
+MedicineList.push(new MedicineInfo("Colpal", 5, 60, new Date(2024, 11, 2)));
+MedicineList.push(new MedicineInfo("Stepsil", 5, 70, new Date(2024, 11, 2)));
+MedicineList.push(new MedicineInfo("Iodex", 5, 80, new Date(2024, 11, 2)));
+MedicineList.push(new MedicineInfo("Acetherol", 5, 100, new Date(2023, 11, 2)));
 let orderList = new Array();
-orderList.push(new Order("MID11", "sasi@gmail.com", "Paracetomol", 2, 100, OrderStatus.ordered));
-orderList.push(new Order("MID12", "sasi@gmail.com", "Colpal", 2, 120, OrderStatus.ordered));
-orderList.push(new Order("MID11", "sasi@gmail.com", "Stepsil", 2, 140, OrderStatus.cancelled));
+orderList.push(new Order("MID11", "sasi@gmail.com", "Paracetomol", 2, 100, OrderStatus.ordered, new Date(2024, 12, 2)));
+orderList.push(new Order("MID12", "sasi@gmail.com", "Colpal", 2, 120, OrderStatus.ordered, new Date(2024, 12, 2)));
+orderList.push(new Order("MID11", "sasi@gmail.com", "Stepsil", 2, 140, OrderStatus.cancelled, new Date(2024, 12, 2)));
 let newuser = (document.getElementById("new-user"));
 let olduser = document.getElementById("user");
 let signinpage = document.getElementById("signinpage");
@@ -66,14 +69,46 @@ newuser.addEventListener("click", function () {
     newuser.classList.add("selected");
     olduser.classList.remove("selected");
     signinpage.classList.add("notshow");
-    display.classList.add("notshow");
+    let mail = document.getElementById("email");
+    let pass = document.getElementById("password");
+    mail.value = "";
+    pass.value = "";
+    let emailmessage = document.getElementById("emailmessage");
+    let signinmessage = document.getElementById("signinmessage");
+    emailmessage.style.display = "none";
+    signinmessage.style.display = "none";
 });
 olduser.addEventListener("click", function () {
     signuppage.classList.add("notshow");
     newuser.classList.remove("selected");
     olduser.classList.add("selected");
     signinpage.classList.remove("notshow");
-    display.classList.add("notshow");
+    let name = document.getElementById("username");
+    let mail = document.getElementById("email1");
+    let pass = document.getElementById("password1");
+    let mobile = document.getElementById("phone");
+    let repass = document.getElementById("confirmpassword");
+    let namemessage = document.getElementById("usernamemessage").style;
+    let mailmessage = document.getElementById("email1message").style;
+    let passmessage = document.getElementById("password1message").style;
+    let mobilemessage = document.getElementById("phonemessage").style;
+    let repassmessage = document.getElementById("confirmpasswordmessage").style;
+    name.value = "";
+    mail.value = "";
+    pass.value = "";
+    mobile.value = "";
+    repass.value = "";
+    namemessage.display = "none";
+    mailmessage.display = "none";
+    passmessage.display = "none";
+    repassmessage.display = "none";
+    mobilemessage.display = "none";
+    correctuserName = false;
+    correctPassword = false;
+    correctEmail = false;
+    correctPhone = false;
+    correctConfirmPassword = false;
+    correctAmount = false;
 });
 function signIn() {
     let mail = document.getElementById("email");
@@ -81,6 +116,7 @@ function signIn() {
     let message = document.getElementById("signinmessage").style;
     let index = document.getElementById("index").style;
     let mainpage = document.getElementById("mainpage");
+    let namedisplay = document.getElementById("namedisplay");
     userList.forEach((user) => {
         if (user.email == mail.value && user.password == pass.value) {
             currentUser = user;
@@ -89,6 +125,12 @@ function signIn() {
             mainpage.classList.remove("notshow");
             mail.value = "";
             pass.value = "";
+            let emailmessage = document.getElementById("emailmessage");
+            let signinmessage = document.getElementById("signinmessage");
+            emailmessage.style.display = "none";
+            signinmessage.style.display = "none";
+            namedisplay.innerHTML = user.UserName;
+            homepage.innerHTML = `<h1>Welcome ${currentUser.UserName}</h1>`;
         }
         else {
             message.display = "block";
@@ -96,23 +138,44 @@ function signIn() {
     });
 }
 function signUp() {
-    if (correctEmail == true && correctPassword == true && correctConfirmPassword == true && correctPhone == true) {
+    if (correctuserName == true && correctEmail == true && correctPassword == true && correctConfirmPassword == true && correctPhone == true) {
+        let name = document.getElementById("username");
         let mail = document.getElementById("email1");
         let pass = document.getElementById("password1");
         let mobile = document.getElementById("phone");
         let repass = document.getElementById("confirmpassword");
-        let user = new UserDetails(mail.value, pass.value, mobile.value);
+        let user = new UserDetails(name.value, mail.value, pass.value, mobile.value);
         userList.push(user);
+        name.value = "";
         mail.value = "";
         pass.value = "";
         mobile.value = "";
         repass.value = "";
+        correctuserName = false;
+        correctPassword = false;
+        correctEmail = false;
+        correctPhone = false;
+        correctConfirmPassword = false;
+        correctAmount = false;
         alert("Registration Successful!");
         signuppage.classList.add("notshow");
         newuser.classList.remove("selected");
         olduser.classList.add("selected");
         signinpage.classList.remove("notshow");
         display.classList.add("notshow");
+    }
+}
+function checkusername(name) {
+    let username = document.getElementById(name);
+    let message = document.getElementById(name + "message");
+    let regx = /^[a-zA-Z@]+$/;
+    if (regx.test(username.value)) {
+        correctuserName = true;
+        message.style.display = "none";
+    }
+    else {
+        correctuserName = false;
+        message.style.display = "block";
     }
 }
 function checkmail(usermail) {
@@ -182,11 +245,70 @@ function checkamount(amount) {
         correctAmount = false;
     }
 }
+let correctMedicineName = false;
+function checkmedicinename(medicine) {
+    let medicine1 = document.getElementById(medicine);
+    let label = document.getElementById(medicine + "message");
+    let regx = /^[a-zA-Z0-9\-]+$/;
+    if (regx.test(medicine1.value)) {
+        label.style.display = "none";
+        correctMedicineName = true;
+    }
+    else {
+        correctMedicineName = false;
+        label.style.display = "block";
+    }
+}
+let correctQuantity = false;
+let correctPrice = false;
+function checkNumber(quantity) {
+    let quantityinput = document.getElementById(quantity);
+    let label = document.getElementById(quantity + "message");
+    if (Number(quantityinput.value) > 0) {
+        label.style.display = "none";
+        correctQuantity = true;
+    }
+    else {
+        label.style.display = "block";
+        correctQuantity = false;
+    }
+}
+function checkPrice(quantity) {
+    let quantityinput = document.getElementById(quantity);
+    let label = document.getElementById(quantity + "message");
+    if (Number(quantityinput.value) > 0) {
+        label.style.display = "none";
+        correctPrice = true;
+    }
+    else {
+        label.style.display = "block";
+        correctPrice = false;
+    }
+}
+let correctDate = false;
+function checkdate(date) {
+    let date1 = document.getElementById(date);
+    let label = document.getElementById(date + "message");
+    let datedetails = date1.value.split('-');
+    let entereddate = new Date(Number(datedetails[0]), Number(datedetails[1]) - 1, Number(datedetails[2]));
+    let currentdate = new Date();
+    if (entereddate > currentdate && date1.value != "" && date1.value.length >= 10) {
+        label.style.display = "none";
+        correctDate = true;
+    }
+    else {
+        label.style.display = "block";
+        correctDate = false;
+    }
+}
 function recharge() {
+    let balance = document.getElementById("balancemessage");
+    balance.innerHTML = `Your current balance is <b class="balancespan">Rs.${currentUser.balance}<b>`;
     let adding = document.getElementById("amount");
     if (correctAmount == true) {
         currentUser.balance += parseInt(adding.value);
         adding.value = "";
+        balance.innerHTML = `Your current balance is <b class="balancespan">Rs.${currentUser.balance}<b>`;
         alert("Recharge Successful");
     }
     else {
@@ -211,9 +333,25 @@ let orderhistorypage = document.getElementById("orderhistorypage");
 let showbalancepage = document.getElementById("showbalancepage");
 let signout = document.getElementById("signout");
 let index = document.getElementById("index").style;
+let amountmessage = document.getElementById("amountmessage");
 function signoutselected() {
     mainpage.classList.add("notshow");
     index.display = "block";
+    home.classList.add("selectedmenu");
+    medicine.classList.remove("selectedmenu");
+    purchase.classList.remove("selectedmenu");
+    cancel.classList.remove("selectedmenu");
+    topup.classList.remove("selectedmenu");
+    orderhistory.classList.remove("selectedmenu");
+    showbalance.classList.remove("selectedmenu");
+    homepage.style.display = "flex";
+    medicinepage.style.display = "none";
+    purchasepage.style.display = "none";
+    cancelpage.style.display = "none";
+    topuppage.style.display = "none";
+    orderhistorypage.style.display = "none";
+    showbalancepage.style.display = "none";
+    amountmessage.style.display = "none";
 }
 function homeselected() {
     home.classList.add("selectedmenu");
@@ -230,6 +368,7 @@ function homeselected() {
     topuppage.style.display = "none";
     orderhistorypage.style.display = "none";
     showbalancepage.style.display = "none";
+    amountmessage.style.display = "none";
 }
 function medicineselected() {
     home.classList.remove("selectedmenu");
@@ -246,6 +385,7 @@ function medicineselected() {
     topuppage.style.display = "none";
     orderhistorypage.style.display = "none";
     showbalancepage.style.display = "none";
+    amountmessage.style.display = "none";
     medicinedetails();
 }
 function purchaseselected() {
@@ -263,6 +403,7 @@ function purchaseselected() {
     topuppage.style.display = "none";
     orderhistorypage.style.display = "none";
     showbalancepage.style.display = "none";
+    amountmessage.style.display = "none";
     purchasedetails();
 }
 function cancelselected() {
@@ -280,6 +421,7 @@ function cancelselected() {
     topuppage.style.display = "none";
     orderhistorypage.style.display = "none";
     showbalancepage.style.display = "none";
+    amountmessage.style.display = "none";
     cancelDetails();
 }
 function topupselected() {
@@ -299,6 +441,8 @@ function topupselected() {
     showbalancepage.style.display = "none";
     let adding = document.getElementById("amount");
     adding.value = "";
+    let balance = document.getElementById("balancemessage");
+    balance.innerHTML = `Your current balance is <span class="balancespan"><b> Rs.${currentUser.balance}<b><span>`;
 }
 function orderhistoryselected() {
     home.classList.remove("selectedmenu");
@@ -315,6 +459,7 @@ function orderhistoryselected() {
     topuppage.style.display = "none";
     orderhistorypage.style.display = "flex";
     showbalancepage.style.display = "none";
+    amountmessage.style.display = "none";
     historydetails();
 }
 function showbalanceselected() {
@@ -331,9 +476,10 @@ function showbalanceselected() {
     cancelpage.style.display = "none";
     topuppage.style.display = "none";
     orderhistorypage.style.display = "none";
+    amountmessage.style.display = "none";
     showbalancepage.style.display = "flex";
     let Balance = document.getElementById("Balance");
-    Balance.innerHTML = `Your account balance is <strong>Rs.${currentUser.balance}<strong>`;
+    Balance.innerHTML = `Your account balance is <strong> Rs.${currentUser.balance}<strong>`;
 }
 let medicinetable = document.getElementById("medicinetable");
 function confirmAddMedicine() {
@@ -343,19 +489,19 @@ function confirmAddMedicine() {
     let price = document.getElementById("medicineprice");
     let expiryDate = document.getElementById("expirydate");
     let date = expiryDate.value.split('-');
-    if (medicine.value != "" && quantity.value != "" && Number(quantity.value) > 0 && price.value != "" && Number(price.value) > 0 && expiryDate.value != "") {
+    if (correctMedicineName == true && correctQuantity == true && correctPrice == true && correctDate == true) {
         if (edit == false) {
-            let vaccine = new MedicineInfo(medicine.value, Number(quantity.value), Number(price.value), new Date(Number(date[0]), Number(date[1]), Number(date[2])));
+            let vaccine = new MedicineInfo(medicine.value, Number(quantity.value), Number(price.value), new Date(Number(date[0]), Number(date[1]) - 1, Number(date[2])));
             MedicineList.push(vaccine);
             alert("Medicine added successfully");
         }
         else {
             MedicineList.forEach((medicine2) => {
-                if (medicineEdit == medicine2.MedicineID) {
+                if (storemedicine == medicine2.MedicineID) {
                     medicine2.MedicineName = medicine.value;
                     medicine2.MedicinePrice = Number(price.value);
                     medicine2.MedicineCount = Number(quantity.value);
-                    medicine2.ExpiryDate = new Date(Number(date[0]), Number(date[1]), Number(date[2]));
+                    medicine2.ExpiryDate = new Date(Number(date[0]), Number(date[1]) - 1, Number(date[2]));
                     alert("Medicine updated successfully");
                     edit = false;
                 }
@@ -369,21 +515,26 @@ function confirmAddMedicine() {
     }
 }
 let edit = false;
-let medicineEdit;
+let storemedicine;
 function EditMedicine(id) {
     let medicinename = document.getElementById("medicinename");
     let quantity = document.getElementById("medicinequantity");
     let price = document.getElementById("medicineprice");
     let expiryDate = document.getElementById("expirydate");
     addMedicineForm();
+    correctMedicineName = true;
+    correctQuantity = true;
+    correctPrice = true;
+    correctDate = true;
     edit = true;
     MedicineList.forEach((medicine) => {
         if (medicine.MedicineID == id) {
-            medicineEdit = medicine.MedicineID;
             medicinename.value = medicine.MedicineName;
             quantity.value = medicine.MedicineCount.toString();
             price.value = medicine.MedicinePrice.toString();
-            expiryDate.value = `${medicine.ExpiryDate.getFullYear()}-${medicine.ExpiryDate.getMonth()}-${medicine.ExpiryDate.getDate()}`;
+            let date = new Date(medicine.ExpiryDate.getFullYear(), medicine.ExpiryDate.getMonth(), medicine.ExpiryDate.getDate() + 1).toISOString();
+            expiryDate.value = (date.split('T'))[0];
+            storemedicine = id;
         }
     });
 }
@@ -406,22 +557,36 @@ function addMedicineForm() {
 function CancelPurchase() {
     let form = document.getElementById("quantityform");
     let purchasetable = document.getElementById("handlepurchase");
+    let quantityinput = document.getElementById("purchasequantity");
+    quantityinput.value = "";
     purchasetable.style.display = "block";
     form.style.display = "none";
 }
 function cancelAddMedicine() {
     let medicine = document.getElementById("table");
     let medicineform = document.getElementById("medicineform");
-    medicine.style.display = "block";
+    medicine.style.display = "flex";
     medicineform.style.display = "none";
     let medicinename = document.getElementById("medicinename");
     let quantity = document.getElementById("medicinequantity");
     let price = document.getElementById("medicineprice");
     let expiryDate = document.getElementById("expirydate");
+    let medicinemessage = document.getElementById("medicinenamemessage").style;
+    let quantitymessage = document.getElementById("medicinequantitymessage").style;
+    let pricemessage = document.getElementById("medicinepricemessage").style;
+    let expirymessage = document.getElementById("expirydatemessage").style;
     medicinename.value = "";
     quantity.value = "";
     price.value = "";
     expiryDate.value = "";
+    medicinemessage.display = "none";
+    quantitymessage.display = "none";
+    pricemessage.display = "none";
+    expirymessage.display = "none";
+    correctMedicineName = false;
+    correctQuantity = false;
+    correctPrice = false;
+    correctDate = false;
     edit = false;
 }
 function medicinedetails() {
@@ -430,7 +595,7 @@ function medicinedetails() {
         medicinetable.innerHTML = "";
         medicinetable.innerHTML += "<tr><th>Medicine Name</th><th>Price</th><th>Available Quantity</th><th>Expiry Date</th><th>Action</th></tr>";
         MedicineList.forEach((medicine) => {
-            medicinetable.innerHTML += `<tr><td>${medicine.MedicineName}</td><td>${medicine.MedicinePrice}</td><td>${medicine.MedicineCount}</td><td>${medicine.ExpiryDate.getDate()}/${medicine.ExpiryDate.getMonth() + 1}/${medicine.ExpiryDate.getFullYear()}</td><td><button id="edit" onclick="EditMedicine('${medicine.MedicineID}')" class="edit pagebtn">Edit</button><button id="delete" onclick="DeleteMedicine('${medicine.MedicineID}')" class="delete pagebtn">Delete</button></td></tr>`;
+            medicinetable.innerHTML += `<tr><td>${medicine.MedicineName}</td><td>${medicine.MedicinePrice}</td><td>${medicine.MedicineCount}</td><td>${(medicine.ExpiryDate.getDate()).toString().padStart(2, '0')}/${(medicine.ExpiryDate.getMonth() + 1).toString().padStart(2, '0')}/${medicine.ExpiryDate.getFullYear()}</td><td><button id="edit" onclick="EditMedicine('${medicine.MedicineID}')" class="edit pagebtn">Edit</button><button id="delete" onclick="DeleteMedicine('${medicine.MedicineID}')" class="delete pagebtn">Delete</button></td></tr>`;
             increment++;
         });
     }
@@ -441,8 +606,10 @@ function purchasedetails() {
     purchasetable.innerHTML = "";
     purchasetable.innerHTML += "<tr><th>Medicine Name</th><th>Price</th><th>Available Quantity</th><th>Expiry Date</th><th>Action</th></tr>";
     MedicineList.forEach((medicine) => {
-        purchasetable.innerHTML += `<tr><td>${medicine.MedicineName}</td><td>${medicine.MedicinePrice}</td><td>${medicine.MedicineCount}</td><td>${medicine.ExpiryDate.getDate()}/${medicine.ExpiryDate.getMonth() + 1}/${medicine.ExpiryDate.getFullYear()}</td><td><button id="purchase${increment}" onclick="Buy('${medicine.MedicineID}')" class="buy pagebtn">Buy</button></td></tr>`;
-        increment++;
+        if (medicine.ExpiryDate > new Date()) {
+            purchasetable.innerHTML += `<tr><td>${medicine.MedicineName}</td><td>${medicine.MedicinePrice}</td><td>${medicine.MedicineCount}</td><td>${medicine.ExpiryDate.getDate()}/${medicine.ExpiryDate.getMonth() + 1}/${medicine.ExpiryDate.getFullYear()}</td><td><button id="purchase${increment}" onclick="Buy('${medicine.MedicineID}')" class="buy pagebtn">Buy</button></td></tr>`;
+            increment++;
+        }
     });
 }
 let purchasemedicine;
@@ -459,16 +626,22 @@ function ConfirmPurchase() {
     MedicineList.forEach((medicine) => {
         if (medicine.MedicineID == purchasemedicine) {
             if (quantity <= medicine.MedicineCount) {
-                if (currentUser.balance >= (quantity * medicine.MedicinePrice)) {
-                    currentUser.balance -= quantity * medicine.MedicinePrice;
-                    medicine.MedicineCount -= quantity;
-                    orderList.push(new Order(medicine.MedicineID, currentUser.email, medicine.MedicineName, quantity, (quantity * medicine.MedicinePrice), OrderStatus.ordered));
-                    alert("Purchase Successful");
-                    purchasedetails();
-                    CancelPurchase();
+                if (medicine.ExpiryDate >= new Date()) {
+                    if (currentUser.balance >= (quantity * medicine.MedicinePrice)) {
+                        currentUser.balance -= quantity * medicine.MedicinePrice;
+                        medicine.MedicineCount -= quantity;
+                        orderList.push(new Order(medicine.MedicineID, currentUser.email, medicine.MedicineName, quantity, (quantity * medicine.MedicinePrice), OrderStatus.ordered, medicine.ExpiryDate));
+                        alert("Purchase Successful");
+                        purchasedetails();
+                        CancelPurchase();
+                    }
+                    else {
+                        alert("Insufficient Balance. Please Recharge and continue");
+                        CancelPurchase();
+                    }
                 }
                 else {
-                    alert("Insufficient Balance. Please Recharge and continue");
+                    alert("Sorry! choosen medicine expired");
                     CancelPurchase();
                 }
             }
@@ -482,7 +655,7 @@ function ConfirmPurchase() {
 }
 function CancelOrder(id) {
     let flag = false;
-    let isremoved = false;
+    let isremoved = true;
     orderList.forEach((order) => {
         if (order.OrderId == id && flag == false) {
             order.OrderStatus = OrderStatus.cancelled;
@@ -493,14 +666,9 @@ function CancelOrder(id) {
                     isremoved = false;
                     return;
                 }
-                else {
-                    isremoved = true;
-                }
             });
             if (isremoved) {
-                let date = new Date();
-                date.setMonth(date.getMonth() + 12);
-                MedicineList.push(new MedicineInfo(order.MedicineName, order.MedicineCount, (order.Price / order.MedicineCount), date));
+                MedicineList.push(new MedicineInfo(order.MedicineName, order.MedicineCount, (order.Price / order.MedicineCount), new Date(order.ExpiryDate.getFullYear(), order.ExpiryDate.getMonth() - 1, order.ExpiryDate.getDate())));
             }
             cancelDetails();
             alert("Cancelled Successfully");

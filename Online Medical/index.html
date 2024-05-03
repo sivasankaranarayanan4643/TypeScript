@@ -28,6 +28,12 @@
             </div>
             <div class="page notshow" id="signuppage">
                 <div class="input">
+
+                    <label for="username">UserName</label>
+                    <input  type="text" name="username" id="username" onfocusout="checkusername('username')">
+                    <label class="message" id="usernamemessage">Enter a valid Name</label>
+                </div>
+                <div class="input">
                     <label for="email1">Email </label>
                     <input  type="email" name="email" id="email1" onfocusout="checkmail('email1')">
                     <label class="message" id="email1message"></label>
@@ -39,7 +45,7 @@
                 </div>
                 <div class="input">
                     <label for="confirmpassword">Confirm Password </label>
-                    <input type="text" name="confirmpassword" id="confirmpassword" onfocusout="confirmPass('confirmpassword')">
+                    <input type="text" name="confirmpassword" id="confirmpassword" onkeyup="confirmPass('confirmpassword')">
                     <label class="message" id="confirmpasswordmessage">Password doesn't match</label>
                 </div>
                 <div class="input">
@@ -54,6 +60,7 @@
 
 
         <div class="mainpage notshow" id="mainpage">
+            <label id="namedisplay" class="namedisplay" ></label>
             <ul class="menubar">
                 <li onclick="homeselected()" id="home" class="selectedmenu menu" >Home</li>
                 <li onclick="medicineselected()" id="medicine" class="menu" >MedicineDetails</li>
@@ -65,7 +72,7 @@
                 <li onclick="signoutselected()" id="signout" class="menu">Sign out</li>
             </ul>
             <div id="homepage" class="homepage menupage">
-                <h1>Welcome to online medical store</h1>
+                
             </div>
             <div id="medicinepage" class="menupage">
                 <div id="table" class="table">
@@ -79,23 +86,23 @@
 
                         <div class="input">
                             <label for="medicinename">Medicine Name</label>
-                            <input type="text" id="medicinename">
+                            <input type="text" id="medicinename" onfocusout="checkmedicinename('medicinename')">
                             <label id="medicinenamemessage" class="message">Invalid medicine name</label>
                         </div>
                         <div class="input">
                             <label for="medicinequantity">Quantity</label>
-                            <input type="number" id="medicinequantity" >
-                            <label id="medicinequantitymessage" class="message">Invalid medicine name</label>
+                            <input type="number" id="medicinequantity" onfocusout="checkNumber('medicinequantity')" >
+                            <label id="medicinequantitymessage" class="message">Invalid number</label>
                         </div>
                         <div class="input">
                             <label for="medicineprice">Price</label>
-                            <input type="number" id="medicineprice" >
-                            <label id="medicinepricemessage" class="message">Invalid medicine name</label>
+                            <input type="number" id="medicineprice" onfocusout="checkPrice('medicineprice')">
+                            <label id="medicinepricemessage" class="message">Invalid amount</label>
                         </div>
                         <div class="input">
                             <label for="expirydate">Expiry Date</label>
-                            <input type="date" id="expirydate" >
-                            <label id="expirydatemessage" class="message">Invalid medicine name</label>
+                            <input type="date" id="expirydate" value="" onfocusout="checkdate('expirydate')" >
+                            <label id="expirydatemessage" class="message">Invalid date </label>
                         </div>
                         <div>
                             <button class="confirmadd" id="confirmadd" onclick="confirmAddMedicine()">confirm</button>
@@ -137,6 +144,9 @@
             </div>
             <div id="topuppage" class="menupage">
                 <div class="getamountpage">
+                    <div id="balancemessage" class="balancemessage">
+                        
+                    </div>
                     <div class="input">
                         <label for="amount">Enter Amount</label>
                         <input type="text" id="amount" onkeyup="checkamount('amount')">

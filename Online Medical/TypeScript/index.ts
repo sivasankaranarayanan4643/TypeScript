@@ -3,6 +3,7 @@ let correctEmail=false;
 let correctPhone=false;
 let correctConfirmPassword=false;
 let correctAmount=false;
+let correctuserName=false;
 
 let MedicineIdAutoIncrement = 10;
 let OrderIdAutoIncrement = 100;
@@ -13,13 +14,15 @@ let currentUser: UserDetails;
 
 class UserDetails
 {
+    UserName:string;
     email:string;
     password: string;
     phone:string;
     balance: number=0;
     
-    constructor(email:string,password:string,phone:string)
+    constructor(userName:string,email:string,password:string,phone:string)
     {
+        this.UserName=userName;
         this.email=email;
         this.password=password;
         this.phone=phone;
@@ -55,8 +58,9 @@ class Order {
     MedicineCount: number;
     Price:number;
     OrderStatus:OrderStatus;
+    ExpiryDate:Date;
 
-    constructor(paramMedicineId: string, email: string, paramMedicineName: string, paramMedicineCount: number,price:number ,orderStatus:OrderStatus) {
+    constructor(paramMedicineId: string, email: string, paramMedicineName: string, paramMedicineCount: number,price:number ,orderStatus:OrderStatus,expiryDate:Date) {
         OrderIdAutoIncrement++;
         this.Price=price;
         this.OrderId = "OI" + OrderIdAutoIncrement.toString();
@@ -65,25 +69,26 @@ class Order {
         this.MedicineName = paramMedicineName;
         this.MedicineCount = paramMedicineCount;
         this.OrderStatus=orderStatus;
+        this.ExpiryDate=expiryDate;
     }
 }
 
 let userList: Array<UserDetails> =new Array<UserDetails>();
 
-userList.push(new UserDetails("sasi@gmail.com","Sasi@123","6369765310"));
+userList.push(new UserDetails("Sasi","sasi@gmail.com","Sasi@123","6369765310"));
 
 let MedicineList: Array<MedicineInfo> = new Array<MedicineInfo>();
-MedicineList.push(new MedicineInfo("Paracetomol", 5, 50,new Date(2024,12,2)));
-MedicineList.push(new MedicineInfo("Colpal", 5, 60,new Date(2024,12,2)));
-MedicineList.push(new MedicineInfo("Stepsil", 5, 70,new Date(2024,12,2)));
-MedicineList.push(new MedicineInfo("Iodex", 5, 80,new Date(2024,12,2)));
-MedicineList.push(new MedicineInfo("Acetherol", 5, 100,new Date(2024,12,2)));
+MedicineList.push(new MedicineInfo("Paracetomol", 5, 50,new Date(2024,11,2)));
+MedicineList.push(new MedicineInfo("Colpal", 5, 60,new Date(2024,11,2)));
+MedicineList.push(new MedicineInfo("Stepsil", 5, 70,new Date(2024,11,2)));
+MedicineList.push(new MedicineInfo("Iodex", 5, 80,new Date(2024,11,2)));
+MedicineList.push(new MedicineInfo("Acetherol", 5, 100,new Date(2023,11,2)));
 
 
 let orderList:Array<Order>=new Array<Order>();
-orderList.push(new Order("MID11","sasi@gmail.com","Paracetomol",2,100,OrderStatus.ordered));
-orderList.push(new Order("MID12","sasi@gmail.com","Colpal",2,120,OrderStatus.ordered));
-orderList.push(new Order("MID11","sasi@gmail.com","Stepsil",2,140,OrderStatus.cancelled));
+orderList.push(new Order("MID11","sasi@gmail.com","Paracetomol",2,100,OrderStatus.ordered,new Date(2024,12,2)));
+orderList.push(new Order("MID12","sasi@gmail.com","Colpal",2,120,OrderStatus.ordered,new Date(2024,12,2)));
+orderList.push(new Order("MID11","sasi@gmail.com","Stepsil",2,140,OrderStatus.cancelled,new Date(2024,12,2)));
 
 
 let newuser=(document.getElementById("new-user"))as HTMLButtonElement;
@@ -101,8 +106,15 @@ newuser.addEventListener("click",function()
     newuser.classList.add("selected");
     olduser.classList.remove("selected");
     signinpage.classList.add("notshow");
-    display.classList.add("notshow");
-
+   
+    let mail=(document.getElementById("email")as HTMLInputElement);
+    let pass=(document.getElementById("password")as HTMLInputElement);
+    mail.value="";
+    pass.value="";
+    let emailmessage=(document.getElementById("emailmessage")as HTMLLabelElement);
+    let signinmessage=(document.getElementById("signinmessage")as HTMLLabelElement);
+    emailmessage.style.display="none";
+    signinmessage.style.display="none";
 })
 
 olduser.addEventListener("click",function()
@@ -111,7 +123,33 @@ olduser.addEventListener("click",function()
     newuser.classList.remove("selected");
     olduser.classList.add("selected");
     signinpage.classList.remove("notshow");
-    display.classList.add("notshow");
+    let name=(document.getElementById("username")as HTMLInputElement);
+    let mail=(document.getElementById("email1")as HTMLInputElement); 
+    let pass=(document.getElementById("password1")as HTMLInputElement);
+    let mobile=(document.getElementById("phone")as HTMLInputElement);
+    let repass=(document.getElementById("confirmpassword")as HTMLInputElement);
+    let namemessage=(document.getElementById("usernamemessage")as HTMLLabelElement).style;
+    let mailmessage=(document.getElementById("email1message")as HTMLLabelElement).style; 
+    let passmessage=(document.getElementById("password1message")as HTMLLabelElement).style;
+    let mobilemessage=(document.getElementById("phonemessage")as HTMLLabelElement).style;
+    let repassmessage=(document.getElementById("confirmpasswordmessage")as HTMLLabelElement).style;
+    name.value="";
+    mail.value="";
+    pass.value="";
+    mobile.value="";
+    repass.value="";
+    namemessage.display="none";
+    mailmessage.display="none";
+    passmessage.display="none";
+    repassmessage.display="none";
+    mobilemessage.display="none";
+    correctuserName=false;
+    correctPassword=false;
+    correctEmail=false;
+    correctPhone=false;
+    correctConfirmPassword=false;
+    correctAmount=false;
+   
 })
 
 function signIn()
@@ -121,6 +159,7 @@ function signIn()
     let message=(document.getElementById("signinmessage")as HTMLLabelElement).style;
     let index=(document.getElementById("index")as HTMLDivElement).style;
     let mainpage=(document.getElementById("mainpage")as HTMLDivElement);
+    let namedisplay=(document.getElementById("namedisplay")as HTMLLabelElement);
     userList.forEach((user)=>
     {
         if(user.email==mail.value && user.password==pass.value)
@@ -131,7 +170,12 @@ function signIn()
             mainpage.classList.remove("notshow");
             mail.value="";
             pass.value="";
-    
+            let emailmessage=(document.getElementById("emailmessage")as HTMLLabelElement);
+            let signinmessage=(document.getElementById("signinmessage")as HTMLLabelElement);
+            emailmessage.style.display="none";
+            signinmessage.style.display="none";
+            namedisplay.innerHTML=user.UserName;
+            homepage.innerHTML=`<h1>Welcome ${currentUser.UserName}</h1>`;
 
         }
         else
@@ -145,20 +189,27 @@ function signIn()
 
 function signUp()
 {
-    if(correctEmail==true&&correctPassword==true&&correctConfirmPassword==true&&correctPhone==true)
+    if(correctuserName==true&&correctEmail==true&&correctPassword==true&&correctConfirmPassword==true&&correctPhone==true)
     {
+        let name=(document.getElementById("username")as HTMLInputElement);
         let mail=(document.getElementById("email1")as HTMLInputElement); 
         let pass=(document.getElementById("password1")as HTMLInputElement);
         let mobile=(document.getElementById("phone")as HTMLInputElement);
         let repass=(document.getElementById("confirmpassword")as HTMLInputElement);
 
-        let user=new UserDetails(mail.value,pass.value,mobile.value);
+        let user=new UserDetails(name.value,mail.value,pass.value,mobile.value);
         userList.push(user);
+        name.value="";
         mail.value="";
         pass.value="";
         mobile.value="";
         repass.value="";
-
+        correctuserName=false;
+        correctPassword=false;
+        correctEmail=false;
+        correctPhone=false;
+        correctConfirmPassword=false;
+        correctAmount=false;
 
         alert("Registration Successful!")
         signuppage.classList.add("notshow");
@@ -168,6 +219,24 @@ function signUp()
         display.classList.add("notshow");
         
     }
+}
+
+function checkusername(name:string)
+{
+    let username=(document.getElementById(name)as HTMLInputElement);
+    let message=(document.getElementById(name+"message")as HTMLLabelElement);
+    let regx=/^[a-zA-Z@]+$/
+    if(regx.test(username.value))
+    {
+        correctuserName=true;
+        message.style.display="none";
+    }
+    else
+    {
+        correctuserName=false;
+        message.style.display="block"
+    }
+
 }
 
 
@@ -258,14 +327,85 @@ function checkamount(amount:string)
         correctAmount=false;
     }
 }
-
+let correctMedicineName:boolean=false;
+function checkmedicinename(medicine:string)
+{
+    let medicine1=(document.getElementById(medicine)as HTMLInputElement);
+    let label=(document.getElementById(medicine+"message")as HTMLLabelElement);
+    let regx=/^[a-zA-Z0-9\-]+$/;
+    if(regx.test(medicine1.value))
+    {
+        label.style.display="none";
+        correctMedicineName=true;
+    }
+    else
+    {
+        correctMedicineName=false;
+        label.style.display="block";
+    }
+}
+let correctQuantity:boolean=false;
+let correctPrice:boolean=false;
+function checkNumber(quantity:string)
+{
+    let quantityinput=(document.getElementById(quantity)as HTMLInputElement);
+    let label=(document.getElementById(quantity+"message")as HTMLLabelElement);
+    if(Number(quantityinput.value)>0)
+    {
+        label.style.display="none";
+        correctQuantity=true;
+    }
+    else
+    {
+        label.style.display="block";
+        correctQuantity=false;
+    }
+}
+function checkPrice(quantity:string)
+{
+    let quantityinput=(document.getElementById(quantity)as HTMLInputElement);
+    let label=(document.getElementById(quantity+"message")as HTMLLabelElement);
+    if(Number(quantityinput.value)>0)
+    {
+        label.style.display="none";
+        correctPrice=true;
+    }
+    else
+    {
+        label.style.display="block";
+        correctPrice=false;
+    }
+}
+let correctDate:boolean=false;
+function checkdate(date:string)
+{
+    
+    let date1=(document.getElementById(date)as HTMLInputElement);
+    let label=(document.getElementById(date+"message")as HTMLLabelElement);
+    let datedetails:string[]=date1.value.split('-');
+    let entereddate:Date=new Date(Number(datedetails[0]),Number(datedetails[1])-1,Number(datedetails[2]));
+    let currentdate:Date=new Date();
+    if(entereddate>currentdate&& date1.value!=""&&date1.value.length>=10)
+    {
+        label.style.display="none";
+        correctDate=true;
+    }
+    else
+    {
+        label.style.display="block";
+        correctDate=false;
+    }
+}
 function recharge()
 {
+    let balance=(document.getElementById("balancemessage")as HTMLLabelElement);
+    balance.innerHTML=`Your current balance is <b class="balancespan">Rs.${currentUser.balance}<b>`;
     let adding=(document.getElementById("amount")as HTMLInputElement);
     if(correctAmount==true)
     {
         currentUser.balance+=parseInt(adding.value);
         adding.value="";
+        balance.innerHTML=`Your current balance is <b class="balancespan">Rs.${currentUser.balance}<b>`;
         alert("Recharge Successful");
 
     }
@@ -292,11 +432,26 @@ let orderhistorypage=(document.getElementById("orderhistorypage")as HTMLDivEleme
 let showbalancepage=(document.getElementById("showbalancepage")as HTMLDivElement);
 let signout=(document.getElementById("signout")as HTMLUListElement);
 let index=(document.getElementById("index")as HTMLDivElement).style;
+let amountmessage=(document.getElementById("amountmessage")as HTMLLabelElement);
 function signoutselected()
 {
     mainpage.classList.add("notshow");
     index.display="block";
-
+    home.classList.add("selectedmenu");
+    medicine.classList.remove("selectedmenu");
+    purchase.classList.remove("selectedmenu");
+    cancel.classList.remove("selectedmenu");
+    topup.classList.remove("selectedmenu");
+    orderhistory.classList.remove("selectedmenu");
+    showbalance.classList.remove("selectedmenu");
+    homepage.style.display="flex";
+    medicinepage.style.display="none";
+    purchasepage.style.display="none";
+    cancelpage.style.display="none";
+    topuppage.style.display="none";
+    orderhistorypage.style.display="none";
+    showbalancepage.style.display="none";
+    amountmessage.style.display="none";
 
     
 }
@@ -316,6 +471,7 @@ function homeselected()
     topuppage.style.display="none";
     orderhistorypage.style.display="none";
     showbalancepage.style.display="none";
+    amountmessage.style.display="none";
 }
 
 function medicineselected()
@@ -334,6 +490,7 @@ function medicineselected()
     topuppage.style.display="none";
     orderhistorypage.style.display="none";
     showbalancepage.style.display="none";
+    amountmessage.style.display="none";
     medicinedetails();
 }
 
@@ -353,6 +510,7 @@ function purchaseselected()
     topuppage.style.display="none";
     orderhistorypage.style.display="none";
     showbalancepage.style.display="none";
+    amountmessage.style.display="none";
     purchasedetails();
 }
 
@@ -372,6 +530,7 @@ function cancelselected()
     topuppage.style.display="none";
     orderhistorypage.style.display="none";
     showbalancepage.style.display="none";
+    amountmessage.style.display="none";
     cancelDetails();
 }
 
@@ -393,6 +552,8 @@ function topupselected()
     showbalancepage.style.display="none";
     let adding=(document.getElementById("amount")as HTMLInputElement);
     adding.value="";
+    let balance=(document.getElementById("balancemessage")as HTMLLabelElement);
+    balance.innerHTML=`Your current balance is <span class="balancespan"><b> Rs.${currentUser.balance}<b><span>`;
 }
 
 function orderhistoryselected()
@@ -411,6 +572,7 @@ function orderhistoryselected()
     topuppage.style.display="none";
     orderhistorypage.style.display="flex";
     showbalancepage.style.display="none";
+    amountmessage.style.display="none";
     historydetails();
 }
 
@@ -429,10 +591,11 @@ function showbalanceselected()
     cancelpage.style.display="none";
     topuppage.style.display="none";
     orderhistorypage.style.display="none";
+    amountmessage.style.display="none";
     showbalancepage.style.display="flex";
 
     let Balance=(document.getElementById("Balance")as HTMLHeadingElement);
-    Balance.innerHTML=`Your account balance is <strong>Rs.${currentUser.balance}<strong>`;
+    Balance.innerHTML=`Your account balance is <strong> Rs.${currentUser.balance}<strong>`;
     
 }
 let medicinetable=(document.getElementById("medicinetable") as HTMLTableElement);
@@ -444,26 +607,28 @@ function confirmAddMedicine()
     let price=(document.getElementById("medicineprice")as HTMLInputElement);
     let expiryDate=(document.getElementById("expirydate")as HTMLInputElement);
     let date:string[]=expiryDate.value.split('-');
-    if(medicine.value!=""&&quantity.value!=""&&Number(quantity.value)>0&&price.value!=""&&Number(price.value)>0&&expiryDate.value!="")
+    if(correctMedicineName==true&&correctQuantity==true&&correctPrice==true&&correctDate==true)
     {
         if(edit==false)
         {
-            let vaccine=new MedicineInfo(medicine.value,Number(quantity.value),Number(price.value),new Date(Number(date[0]),Number(date[1]),Number(date[2])));
+            let vaccine=new MedicineInfo(medicine.value,Number(quantity.value),Number(price.value),new Date(Number(date[0]),Number(date[1])-1,Number(date[2])));
             MedicineList.push(vaccine);
             alert("Medicine added successfully")
+            
         }
         else
         {
             MedicineList.forEach((medicine2)=>
             {
-                if(medicineEdit==medicine2.MedicineID)
+                if(storemedicine==medicine2.MedicineID)
                 {
                     medicine2.MedicineName=medicine.value;
                     medicine2.MedicinePrice=Number(price.value);
                     medicine2.MedicineCount=Number(quantity.value);
-                    medicine2.ExpiryDate=new Date(Number(date[0]),Number(date[1]),Number(date[2]));
+                    medicine2.ExpiryDate=new Date(Number(date[0]),Number(date[1])-1,Number(date[2]));
                     alert("Medicine updated successfully");
                     edit=false;
+                   
                 }
             })
         }
@@ -476,7 +641,7 @@ function confirmAddMedicine()
     }
 }
 let edit:boolean=false;
-let medicineEdit:string;
+let storemedicine:string;
 function EditMedicine(id:string)
 {
     let medicinename=(document.getElementById("medicinename")as HTMLInputElement);
@@ -484,20 +649,26 @@ function EditMedicine(id:string)
     let price=(document.getElementById("medicineprice")as HTMLInputElement);
     let expiryDate=(document.getElementById("expirydate")as HTMLInputElement);
     addMedicineForm();
+    correctMedicineName=true;
+    correctQuantity=true;
+    correctPrice=true;
+    correctDate=true;
     edit=true;
     MedicineList.forEach((medicine)=>
     {
         if(medicine.MedicineID==id)
         {
-            medicineEdit=medicine.MedicineID;
             medicinename.value=medicine.MedicineName;
             quantity.value=medicine.MedicineCount.toString();
             price.value=medicine.MedicinePrice.toString();
-            expiryDate.value=`${medicine.ExpiryDate.getFullYear()}-${medicine.ExpiryDate.getMonth()}-${medicine.ExpiryDate.getDate()}`;
+            let date=new Date(medicine.ExpiryDate.getFullYear(),medicine.ExpiryDate.getMonth(),medicine.ExpiryDate.getDate()+1).toISOString();
+            expiryDate.value=(date.split('T'))[0];
+            storemedicine=id;
         }
     })
     
 }
+
 
 function DeleteMedicine(id:string)
 {
@@ -526,6 +697,8 @@ function CancelPurchase()
 {
     let form=(document.getElementById("quantityform")as HTMLDivElement);
     let purchasetable=(document.getElementById("handlepurchase")as HTMLDivElement);
+    let quantityinput=(document.getElementById("purchasequantity")as HTMLInputElement);
+    quantityinput.value="";
     purchasetable.style.display="block";
     form.style.display="none";
 }
@@ -534,16 +707,28 @@ function cancelAddMedicine()
 {
     let medicine=document.getElementById("table")as HTMLDivElement;
     let medicineform=document.getElementById("medicineform")as HTMLDivElement;
-    medicine.style.display="block";
+    medicine.style.display="flex";
     medicineform.style.display="none";
     let medicinename=(document.getElementById("medicinename")as HTMLInputElement);
     let quantity=(document.getElementById("medicinequantity")as HTMLInputElement);
     let price=(document.getElementById("medicineprice")as HTMLInputElement);
     let expiryDate=(document.getElementById("expirydate")as HTMLInputElement);
+    let medicinemessage=(document.getElementById("medicinenamemessage")as HTMLLabelElement).style;
+    let quantitymessage=(document.getElementById("medicinequantitymessage")as HTMLLabelElement).style;
+    let pricemessage=(document.getElementById("medicinepricemessage")as HTMLLabelElement).style;
+    let expirymessage=(document.getElementById("expirydatemessage")as HTMLLabelElement).style;
     medicinename.value="";
     quantity.value="";
     price.value="";
     expiryDate.value="";
+    medicinemessage.display="none";
+    quantitymessage.display="none";
+    pricemessage.display="none";
+    expirymessage.display="none";
+    correctMedicineName=false;
+    correctQuantity=false;
+    correctPrice=false;
+    correctDate=false;
     edit=false;
 }
 function medicinedetails()
@@ -555,7 +740,7 @@ function medicinedetails()
         medicinetable.innerHTML+="<tr><th>Medicine Name</th><th>Price</th><th>Available Quantity</th><th>Expiry Date</th><th>Action</th></tr>";
         MedicineList.forEach((medicine)=>
         {
-            medicinetable.innerHTML+=`<tr><td>${medicine.MedicineName}</td><td>${medicine.MedicinePrice}</td><td>${medicine.MedicineCount}</td><td>${medicine.ExpiryDate.getDate()}/${medicine.ExpiryDate.getMonth()+1}/${medicine.ExpiryDate.getFullYear()}</td><td><button id="edit" onclick="EditMedicine('${medicine.MedicineID}')" class="edit pagebtn">Edit</button><button id="delete" onclick="DeleteMedicine('${medicine.MedicineID}')" class="delete pagebtn">Delete</button></td></tr>`;
+            medicinetable.innerHTML+=`<tr><td>${medicine.MedicineName}</td><td>${medicine.MedicinePrice}</td><td>${medicine.MedicineCount}</td><td>${(medicine.ExpiryDate.getDate()).toString().padStart(2,'0')}/${(medicine.ExpiryDate.getMonth()+1).toString().padStart(2,'0')}/${medicine.ExpiryDate.getFullYear()}</td><td><button id="edit" onclick="EditMedicine('${medicine.MedicineID}')" class="edit pagebtn">Edit</button><button id="delete" onclick="DeleteMedicine('${medicine.MedicineID}')" class="delete pagebtn">Delete</button></td></tr>`;
             increment++;
         })
     }
@@ -571,8 +756,12 @@ function purchasedetails()
     purchasetable.innerHTML+="<tr><th>Medicine Name</th><th>Price</th><th>Available Quantity</th><th>Expiry Date</th><th>Action</th></tr>";
     MedicineList.forEach((medicine)=>
     {
-        purchasetable.innerHTML+=`<tr><td>${medicine.MedicineName}</td><td>${medicine.MedicinePrice}</td><td>${medicine.MedicineCount}</td><td>${medicine.ExpiryDate.getDate()}/${medicine.ExpiryDate.getMonth()+1}/${medicine.ExpiryDate.getFullYear()}</td><td><button id="purchase${increment}" onclick="Buy('${medicine.MedicineID}')" class="buy pagebtn">Buy</button></td></tr>`;
-        increment++;
+        if(medicine.ExpiryDate>new Date())
+        {
+
+            purchasetable.innerHTML+=`<tr><td>${medicine.MedicineName}</td><td>${medicine.MedicinePrice}</td><td>${medicine.MedicineCount}</td><td>${medicine.ExpiryDate.getDate()}/${medicine.ExpiryDate.getMonth()+1}/${medicine.ExpiryDate.getFullYear()}</td><td><button id="purchase${increment}" onclick="Buy('${medicine.MedicineID}')" class="buy pagebtn">Buy</button></td></tr>`;
+            increment++;
+        }
     })
 }
 // purchasedetails();
@@ -596,18 +785,27 @@ function ConfirmPurchase()
         {
             if(quantity<=medicine.MedicineCount)
             {
-                if(currentUser.balance>=(quantity*medicine.MedicinePrice))
+                if(medicine.ExpiryDate>=new Date())
                 {
-                    currentUser.balance-=quantity*medicine.MedicinePrice;
-                    medicine.MedicineCount-=quantity;
-                    orderList.push(new Order(medicine.MedicineID,currentUser.email,medicine.MedicineName,quantity,(quantity*medicine.MedicinePrice),OrderStatus.ordered));
-                    alert("Purchase Successful");
-                    purchasedetails();
-                    CancelPurchase();
+
+                    if(currentUser.balance>=(quantity*medicine.MedicinePrice))
+                    {
+                        currentUser.balance-=quantity*medicine.MedicinePrice;
+                        medicine.MedicineCount-=quantity;
+                        orderList.push(new Order(medicine.MedicineID,currentUser.email,medicine.MedicineName,quantity,(quantity*medicine.MedicinePrice),OrderStatus.ordered,medicine.ExpiryDate));
+                        alert("Purchase Successful");
+                        purchasedetails();
+                        CancelPurchase();
+                    }
+                    else
+                    {
+                        alert("Insufficient Balance. Please Recharge and continue");
+                        CancelPurchase();
+                    }
                 }
                 else
                 {
-                    alert("Insufficient Balance. Please Recharge and continue");
+                    alert("Sorry! choosen medicine expired");
                     CancelPurchase();
                 }
             }
@@ -624,8 +822,9 @@ function ConfirmPurchase()
 }
 function CancelOrder(id:string)
 {
+    
     let flag:boolean=false;
-    let isremoved:boolean=false;
+    let isremoved:boolean=true;
     orderList.forEach((order)=>
     {
         if(order.OrderId==id && flag==false)
@@ -640,17 +839,12 @@ function CancelOrder(id:string)
                     isremoved=false;
                     return 
                 }
-                else
-                {
-                    isremoved=true;
-                }
+                
                 
             })
             if(isremoved)
             {
-                let date =new Date();
-                date.setMonth(date.getMonth()+12);
-                MedicineList.push(new MedicineInfo(order.MedicineName,order.MedicineCount,(order.Price/order.MedicineCount),date));
+                MedicineList.push(new MedicineInfo(order.MedicineName,order.MedicineCount,(order.Price/order.MedicineCount),new Date(order.ExpiryDate.getFullYear(),order.ExpiryDate.getMonth()-1,order.ExpiryDate.getDate())));
             }
             cancelDetails();
             alert("Cancelled Successfully");

@@ -29,6 +29,7 @@
     min-width: 50%;
     padding: 4%;
     border: none;
+    cursor: pointer;
 }
 .selected{
     box-shadow: 0 0 10px 1px rgb(126, 123, 123);
@@ -221,4 +222,28 @@
 .quantityform
 {
     display: none;
+}
+.namedisplay
+{
+    position: absolute;
+    right: 8%;
+    top: 0.4%;
+    background-color:rgb(238, 227, 227) ;
+    color: rgb(3, 0, 0);
+    font-weight: bold;
+    border-radius: 0.1rem;
+    box-shadow: 0 0 5px 1px rgb(130, 129, 129);
+    border: 1px solid black;
+    padding: 0.5% 2%;
+}
+.balancemessage
+{
+    text-align: left;
+    display: flex;
+    margin-bottom: 5px;
+    align-content: left;
+}
+.balancespan
+{
+    margin-left: 5px;
 }
