@@ -1,0 +1,247 @@
+*
+{
+    margin: 0;
+    box-sizing: border-box;
+}
+.application
+{
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+}
+.mainpage
+{
+    width: 100%;
+    align-items: flex-start;
+}
+.index
+{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    min-width: 30%;
+    width: 25%;
+    border-radius: 0.3rem;
+    padding:2%;
+    box-shadow: 0 0 2px 1px rgb(150, 148, 148);
+}
+.page
+{
+    width: 80%;
+    padding:5% 10%;
+}
+.options{
+    width: 100%;
+    display: flex;
+}
+.useroption
+{
+    width: 50%;
+    padding:5% 10%;
+    border: none;
+}
+.selectedoption
+{
+    border: 1px solid black;
+    box-shadow: 0 0 2px 1px rgb(150, 148, 148);
+}
+.notshow
+{
+    display: none!important;
+}
+.input-box{
+    width: 100%;
+    margin-bottom: 8%;
+    border: 1px solid black;
+}
+.navbar
+{
+    min-width: 90%;
+    margin:2% 5%;
+    list-style-type: none;
+    display: flex;
+    background-color: black;
+    justify-content: space-between;
+    padding: 0;
+}
+.menu
+{
+    padding: 2% 0;
+    min-width: 13%;
+    text-align: center;
+    color: white;
+    font-weight: bolder;
+
+}
+.menu:hover{
+    background-color: rgba(175, 169, 169,0.4);
+}
+.selectedmenu
+{
+    background-color: rgba(175, 169, 169,0.4);
+}
+.menupage{
+    display: none;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    min-height: calc(100vh - 150px);
+}
+.profile
+{
+    width: 30%;
+    height: 30%;
+    border-radius: 0.4rem;
+    border: 1px solid black;
+    box-shadow: 0 0 2px 1px rgb(150, 148, 148);
+}
+.homepage
+{
+    display: none;
+    flex-direction: column;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+.selectedpage
+{
+    display: flex!important;
+}
+.namedisplay
+{
+    position: absolute;
+    right: 8%;
+    padding:0.5% 2%;
+    top: 0%;
+    box-shadow: 0 0 2px 1px rgb(150, 148, 148);
+    border-radius: 0.4rem;
+    border: 1px solid black;
+}
+.nameshow
+{
+    margin-right: 0.3rem;
+}
+.signout
+{
+    font-weight: bolder;
+    cursor: pointer;
+}
+.table
+{
+    width: 70%;
+    padding:3% 5%;
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    box-shadow: 0 0 12px 1px rgb(97, 96, 96);
+}
+.productimg
+{
+    width: 50%;
+    height: 40%;
+    border-radius: 0.4rem;
+}
+.purchasepage
+{
+    display: none;
+    gap: 5%;
+    flex-wrap: wrap;
+
+}
+.cart
+{
+    width: 17rem;
+    height: 20rem;
+    border: 1px solid black;
+    padding: 1%;
+    box-shadow: 0 0 12px 1px rgb(97, 96, 96);
+    border-radius: 0.3rem;
+}
+.cartimg
+{
+    width: 100%;
+    height: 70%;
+    border: 1px solid black;
+}
+.edit
+{
+    background-color: blue !important;
+    color: white;
+    padding: 5% 7%;
+    border-radius: 0.5rem;
+    width: fit-content!important;
+    margin-right: 2%;
+    border: none;
+    cursor: pointer;
+}
+.delete, .buy,.add,.confirmadd
+{
+    background-color: red;
+    padding:5% 7%;
+    width: fit-content!important;
+    color: white;
+    border-radius: 0.5rem;
+    border: none;
+    cursor: pointer;
+}
+.buy,.add,.confirmadd
+{
+    background-color: green!important;
+}
+.add
+{
+    width: 20%;
+    padding: 1.5% 2%;
+    cursor: pointer;
+
+}
+.addcart
+{
+    padding:5%
+}
+.producttable td,th
+{
+    text-align: center;
+}
+table{
+    text-align: center;
+}
+.historypage
+{
+    flex-direction: column;
+    gap: 5vh;
+}
+.historytable
+{
+    min-width: 50%;
+    margin-bottom: 3%;
+    background-color: white;
+    box-shadow: 0 0 12px 1px rgb(97, 96, 96);
+    padding: 3% 3%;
+}
+.getamountpage
+{
+    display: flex;
+    flex-direction: column;
+    border-radius: 0.5rem;
+    min-width: 20%;
+    margin: auto;
+    padding: 2%;
+    box-shadow: 0 0 10px 1px rgb(86, 86, 86);
+}
+.balancemessage
+{
+    text-align: left;
+    display: flex;
+    margin-bottom: 5px;
+    align-content: left;
+}
+.balancespan
+{
+    margin-left: 5px;
+}

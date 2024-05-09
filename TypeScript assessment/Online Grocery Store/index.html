@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Grocery Store</title>
+    <link rel="stylesheet" href="StyleSheet/index.css">
+</head>
+<body>
+    
+
+    <div class="wrapper">
+        <div id="application" class="application">
+
+            <div id="index" class="index">
+                <div class="options">
+                    <button onclick="NewUser()" id="new-user" class="useroption">New User</button>
+                    <button onclick="OldUser()" id="user" class="useroption selectedoption">Existing User</button>
+                </div>
+                <form id="signinpage" class="signinpage page">
+                    <div class="input">
+                        <label for="useremail">Email</label>
+                        <input class="input-box" type="text" id="useremail">
+                    </div>
+                    <div class="input">
+                        <label for="userpassword">Password</label>
+                        <input class="input-box" type="password" id="userpassword">
+                    </div>
+                    <button id="signin" class="btn">SignIn</button>
+                </form>
+                <form id="signuppage" class="notshow signuppage page">
+                    <div class="input">
+                        <label for="username">User Name</label>
+                        <input class="input-box" type="text" id="username">
+                    </div>
+                    <div class="input">
+                        <label for="email">Email</label>
+                        <input class="input-box" type="text" id="email">
+                    </div>
+                    <div class="input">
+                        <label for="address">Address</label>
+                        <textarea class="input-box" id="address" cols="30" rows="5"></textarea>
+                    </div>
+                    <div class="input">
+                        <label for="password">Password</label>
+                        <input class="input-box" type="password" id="password">
+                    </div>
+                    <div class="input">
+                        <label for="confirmpassword">Confirm Password</label>
+                        <input class="input-box" type="text" id="confirmpassword">
+                    </div>
+                    <div class="input">
+                        <label for="balance">Initial Deposit</label>
+                        <input class="input-box" type="number" id="balance">
+                    </div>
+                    <div class="input">
+                        <label for="imageupload">Upload Image</label>
+                        <input class="input-box" type="file" id="imageupload">
+                    </div>
+                    <button id="signup" class="btn">SignUp</button>
+                </form>
+            </div>
+        </div>
+        <div id="mainpage" class="mainpage notshow">
+            <span class="namedisplay" id="topmenu"><label class="nameshow" id="nameshow"></label><label onclick="signoutselected()" class="signout">Signout</label></span>
+            <ul class="navbar">
+                <li onclick="homeselected()" id="home" class="menu selectedmenu">Home</li>
+                <li onclick="productselected()" id="products" class="menu ">Products</li>
+                <li onclick="purchaseselected()" id="purchase" class="menu">Purchase</li>
+                <li onclick="cartselected()" id="cart" class="menu">Cart</li>
+                <li onclick="historyselected()" id="history" class="menu">Order History</li>
+                <li onclick="rechargeselected()" id="recharge" class="menu">Recharge</li>
+                <li onclick="showbalanceselected()" id="showbalance" class="menu">Show Balance</li>
+            </ul>
+        </div>
+        <div id="homepage" class="homepage  menupage">
+
+        </div>
+        <div id="productspage" class="productspage menupage">
+            <div id="table" class="table">
+                <button class="add" id="add" onclick="addProductForm()">Add</button>
+                <table id="producttable" >
+
+                </table>
+            </div>
+            <div id="productform" class="form notshow index">
+                <div id="productinfo" class="productform">
+
+                    <div class="input">
+                        <label for="productname">Product Name</label>
+                        <input class="input-box" type="text" id="productname">
+                    </div>
+                    <div class="input">
+                        <label for="productquantity">Quantity</label>
+                        <input class="input-box" type="number" id="productquantity" >
+                    </div>
+                    <div class="input">
+                        <label for="productprice">Price</label>
+                        <input class="input-box" type="number" id="productprice" >
+                    </div>
+                    <div class="input">
+                        <label for="purchasedate">Purchase Date</label>
+                        <input class="input-box" type="date" id="purchasedate"  >
+                    </div>
+                    <div class="input">
+                        <label for="expirydate">Expiry Date</label>
+                        <input class="input-box" type="date" id="expirydate"  >
+                    </div>
+                    <div class="input">
+                        <label for="productupload">Select an image</label>
+                        <input class="input-box" type="file" id="productupload">
+                    </div>
+                    <div>
+                        <button class="confirmadd" id="confirmadd" onclick="confirmAddproduct()">confirm</button>
+                        <button class="delete" id="cancel" onclick="cancelAddproduct()">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="purchasepage" class="purchasepage menupage">
+
+        </div>
+        <div id="cartpage" class="cartpage menupage">
+            <div class="table" id="iteminitiate">
+                <table id="carttable">
+    
+                </table>
+                <button class="add" onclick="Buy()">Buy</button>
+            </div>
+        </div>
+        <div id="historypage" class="historypage menupage">
+
+        </div>
+        <div id="rechargepage" class="rechargepage menupage">
+            <div class="getamountpage">
+                <div id="balancemessage" class="balancemessage">
+                    
+                </div>
+                <div class="input">
+                    <label for="amount">Enter Amount</label>
+                    <input type="number" id="amount">
+                </div>
+                <button onclick="recharge()" class="add">Confirm</button>
+            </div>
+        </div>
+        <div id="showbalancepage" class="showbalancepage menupage">
+            <h1 id="Balance"></h1>
+        </div>
+    </div>
+
+    <script src="JavaScript/index.js"></script>
+</body>
+</html>
